@@ -1,5 +1,8 @@
+// Created by Aidan Morgan 12/2/2023
+
 #pragma once
 #include "UFO.h"
+
 // Follows the example shown in Lecture Notes for Module 6 - Sorting: Merge Sort
 // "https://www.onlinegdb.com/HJT6FfMlv"
 
