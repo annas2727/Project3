@@ -83,7 +83,15 @@ void startWindow(UFOlist& ufolist) {
                             sightingsString = "No UFO's Sighted";
                             break;
                         }
-                        sightingsString += to_string(sight.date);
+                        string date = to_string(sight.date);
+                        string year = date.substr(0, 4);
+                        string month = date.substr(4, 2);
+                        string day = date.substr(6, 2);
+                        sightingsString += month;
+                        sightingsString += "/";
+                        sightingsString += day;
+                        sightingsString += "/";
+                        sightingsString += year;
                         sightingsString += "\nDuration: ";
                         sightingsString += sight.duration;
                         sightingsString += "\nShape: ";
