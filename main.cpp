@@ -1,16 +1,11 @@
 #include "Window.h"
 #include "UFO.h"
-#include "Quicksort.h"
-#include "MergeSort.h"
-#include "Toolbox.h"
-#include "Screen.h"
-#include <iostream>
-#include <vector>
+
 
 int main() {
     // Lazy way to source the file
 
-    UFOlist List("files/Project3/cmake-build-debug\\UFOPROJECTCSV.csv");
+    UFOlist List("files/UFOPROJECTCSV.csv");
     /*
     // check to see if sorts work
     vector<UFOsighting> og_list = List.GetSightingsAt(40, -90).second; // test nums

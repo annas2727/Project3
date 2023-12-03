@@ -6,4 +6,6 @@
 #pragma once
 
 void startWindow(UFOlist& ufolist);
+void increasePage(); //onclick action
+void decreasePage(); //onclick action
 

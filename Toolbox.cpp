@@ -12,12 +12,24 @@ Toolbox::Toolbox() {
     window2.loadFromFile("files/window2.jpg");
     redLineH.loadFromFile("files/redLineH.jpg");
     redLineV.loadFromFile("files/redLineV.jpg");
-    upButton.loadFromFile("files/upButton.jpg");
-    downButton.loadFromFile("files/downButton.jpg");
+    upButtonTexture.loadFromFile("files/upButton.jpg");
+    downButtonTexture.loadFromFile("files/downButton.jpg");
 
     sf::Color green(0x02ff0); //neon green color that's used in the window
     sf::CircleShape circle(50);
     circle.setFillColor(green);
     //create initial window
+
+    sf::Sprite sprite;
+    sprite.setTexture(upButtonTexture);
+    //730, 20 are window2 positions
+    upButton = new Button(sf::Vector2f(730 + window2.getSize().x/2 - upButtonTexture.getSize().x/2, 90), increasePage); // Resets / starts new game
+    upButton->setSprite(&sprite); //sets sprite
+    upButton->getSprite()->setPosition(upButton->getPosition());
+
+    sprite.setTexture(downButtonTexture);
+    downButton = new Button(sf::Vector2f(730 + window2.getSize().x/2 - downButtonTexture.getSize().x/2, 500), decreasePage); // Resets / starts new game
+    downButton->setSprite(&sprite); //sets sprite
+    downButton->getSprite()->setPosition(downButton->getPosition());
 }
 

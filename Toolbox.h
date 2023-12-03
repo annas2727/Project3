@@ -1,10 +1,10 @@
 //
 // Created by Anna Sicoli on 11/28/23.
 //
-
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Screen.h"
-#pragma once
+#include "Button.h"
 
 class Toolbox {
     Toolbox();
@@ -17,14 +17,16 @@ public:
     sf::Texture mapTexture;
     sf::Texture redLineV;
     sf::Texture redLineH;
-    sf::Texture upButton;
-    sf::Texture downButton;
+    sf::Texture upButtonTexture;
+    sf::Texture downButtonTexture;
     //Screen worldMap;
 
     sf::Font font;
     sf::Color green;
     sf::CircleShape circle;
-
+    Button* upButton;
+    Button* downButton;
+    int page = 0;
 
     static Toolbox &getInstance() //ensures that there is only one window
     {

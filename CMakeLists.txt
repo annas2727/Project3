@@ -9,7 +9,8 @@ set(SOURCE_FILES main.cpp
         Screen.cpp
         UFO.cpp
         MergeSort.h
-        QuickSort.h)
+        QuickSort.h
+        Button.cpp)
 add_executable(Project3 ${SOURCE_FILES})
 include_directories(/usr/local/include)
 
