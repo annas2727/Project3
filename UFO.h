@@ -36,5 +36,5 @@ public:
     ufo_grid GetGrid();
     // First -> bool to check if grid is populated (don't want to display initializer values)
     // Second-> Gets vector of sighting given an exact X, Y
-    pair<bool, vector<UFOsighting>> GetSightingsAt(double y, double x);
+    pair<bool, vector<UFOsighting>> GetSightingsAt(double y, double x); // latitude then longitude
 };
