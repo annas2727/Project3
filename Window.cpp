@@ -7,6 +7,8 @@
 #include "Screen.h"
 #include <iostream>
 #include <vector>
+#include "QuickSort.h"
+#include "MergeSort.h"
 
 void startWindow(UFOlist& ufolist) {
 
@@ -27,6 +29,17 @@ void startWindow(UFOlist& ufolist) {
     cursorPosition.setFillColor(toolbox.green);
     cursorPosition.setFillColor(sf::Color::Green);
     cursorPosition.setPosition(745, 60);
+
+    // created by Aidan 12:47 12/3
+    sf::Text sightingData;
+
+    sightingData.setFont(toolbox.font);
+    sightingData.setCharacterSize(16);
+    sightingData.setFillColor(toolbox.green);
+    sightingData.setFillColor(sf::Color::Green);
+    sightingData.setPosition(745, 80);
+    sightingData.setStyle(sf::Text::Bold);
+
 
     Screen screen;
     std::vector <std::vector <float>> locations = {{-128, 25}, {-127, 26}, {-90, 30}};
@@ -50,11 +63,34 @@ void startWindow(UFOlist& ufolist) {
                     //this draws the mouse click
                     cursorPosition.setStyle(sf::Text::Bold);
                     cursorPosition.setString("(" + std::to_string(screen.getLongitude(position.x - screen.xpos)) + ", " +
-                    std::to_string(screen.getLatitude(position.y - screen.ypos)) + ")");
+                                             std::to_string(screen.getLatitude(position.y - screen.ypos)) + ")");
 
                     std::string str = cursorPosition.getString();
                     screen.updateLines(position.x, position.y);
 
+                    // Edited by Aidan 12:12 PM 12/3
+
+                    int longitude = static_cast<int>(screen.getLongitude(position.x - screen.xpos));
+                    int latitude = static_cast<int>(screen.getLatitude(position.y - screen.ypos));
+
+                    // positions of latitude and longitude are swapped in GetSigthingsAt method
+                    vector<UFOsighting> sightings = ufolist.GetSightingsAt(latitude, longitude).second;
+                    quickSort(sightings, 0, sightings.size() - 1); // have an if statement for when to sort by merge or quick
+
+                    string sightingsString = "";
+                    for (const auto& sight : sightings) {
+                        if (sight.date == -1) {
+                            sightingsString = "No UFO's Sighted";
+                            break;
+                        }
+                        sightingsString += to_string(sight.date);
+                        sightingsString += "\nDuration: ";
+                        sightingsString += sight.duration;
+                        sightingsString += "\nShape: ";
+                        sightingsString += sight.shape;
+                        sightingsString += "\n\n";
+                    }
+                    sightingData.setString(sightingsString);
                 }
                 //this is going to have to find and print all the surrounding UFOs
                 // SELECT count(*) FROM nuforc_reports where city_longitude is not null and country = "USA"
@@ -77,6 +113,8 @@ void startWindow(UFOlist& ufolist) {
         toolbox.window.draw(world);
 
         toolbox.window.draw(cursorPosition);
+
+        toolbox.window.draw(sightingData);
 
         toolbox.window.display();
     }
