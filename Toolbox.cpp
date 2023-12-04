@@ -10,6 +10,7 @@ Toolbox::Toolbox() {
     mapTexture.loadFromFile("files/usaMap.jpg"); //loads map image
     window1.loadFromFile("files/window1.jpg");
     window2.loadFromFile("files/window2.jpg");
+    window3.loadFromFile("files/window3.jpg");
     redLineH.loadFromFile("files/redLineH.jpg");
     redLineV.loadFromFile("files/redLineV.jpg");
     upButtonTexture.loadFromFile("files/upButton.jpg");
@@ -23,7 +24,7 @@ Toolbox::Toolbox() {
     sf::Sprite sprite;
     sprite.setTexture(upButtonTexture);
     //730, 20 are window2 positions
-    upButton = new Button(sf::Vector2f(730 + window2.getSize().x/2 - upButtonTexture.getSize().x/2, 90), increasePage); // Resets / starts new game
+    upButton = new Button(sf::Vector2f(730 + window2.getSize().x/2 - upButtonTexture.getSize().x/2, 70), increasePage); // Resets / starts new game
     upButton->setSprite(&sprite); //sets sprite
     upButton->getSprite()->setPosition(upButton->getPosition());
 
@@ -32,4 +33,3 @@ Toolbox::Toolbox() {
     downButton->setSprite(&sprite); //sets sprite
     downButton->getSprite()->setPosition(downButton->getPosition());
 }
-

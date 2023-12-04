@@ -42,21 +42,3 @@ float Screen::getLatitude(int y) { //y is the pos the user clicks
     float scaleFactor = (54 - 23) / (double)usaMap.getSize().y; //latitude width / pixels
     return 54 - (double)scaleFactor * y;
 }
-
-bool Screen::isWithinRadius(float x, float y) {
-    if (sqrt (pow(x, 2) + pow(y, 2)) < 4)
-        return true;
-    return false;
-}
-/*
-std::vector<std::vector<float>> Screen::locationsWithinRadius(std::vector<std::vector<float>> locations) {
-    std::vector<std::vector<float>> locationsWithinRadius;
-    for (std::vector<float> coor : locations) {
-        if (isWithinRadius(locations[0], locations[1])){
-            locationsWithinRadius.push_back(locations);
-        }
-    }
-    return locationsWithinRadius;
-}*/
-
-

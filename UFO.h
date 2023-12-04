@@ -30,7 +30,6 @@ class UFOlist {
     // Container for CSV information
     ufo_grid UFOs;
     // Not yet implemented
-    double grid_div_factor;
 public:
     UFOlist(string file);
     ufo_grid GetGrid();

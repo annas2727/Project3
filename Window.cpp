@@ -64,6 +64,9 @@ void startWindow(UFOlist& ufolist) {
     window2.setPosition(730, 20);
     sf::Text cursorPosition;
 
+    sf::Sprite window3(toolbox.window3);
+    window3.setPosition(20, 500);
+
     cursorPosition.setFont(toolbox.font);
     cursorPosition.setCharacterSize(13);
     cursorPosition.setFillColor(toolbox.green);
@@ -84,11 +87,10 @@ void startWindow(UFOlist& ufolist) {
     Screen screen;
     std::vector <std::vector <float>> locations = {{-128, 25}, {-127, 26}, {-90, 30}};
 
-    vector<UFOsighting> sightings;
+    vector<UFOsighting> sightings, sightings2;
     int longitude;
     int latitude;
     int page_num = 0; // increment/decrement this num by 6 as the user pages up and down to see the UFO data
-    bool quick = true;
 
     while (toolbox.window.isOpen()) {
         sf::Event event;
@@ -123,15 +125,23 @@ void startWindow(UFOlist& ufolist) {
                     // positions of latitude and longitude are swapped in GetSigthingsAt method
                     // get sightings
                     sightings = ufolist.GetSightingsAt(latitude, longitude).second;
+                    sightings2 = sightings;
 
-                    // sort sightings either with quick sort or merge sort
-                    if (quick) {
-                        quickSort(sightings, 0, sightings.size() - 1);
-                    }
-                    else {
-                        mergeSort(sightings, 0, sightings.size() - 1);
-                    }
+                    // sort sightings either with quick sort and merge sort
+                    // compare times of each
+                    auto start_quick = chrono::high_resolution_clock ::now();
+                    quickSort(sightings, 0, sightings.size() - 1);
+                    auto end_quick = std::chrono::high_resolution_clock::now();
 
+                    auto start_merge = chrono::high_resolution_clock ::now();
+                    mergeSort(sightings2, 0, sightings.size() - 1);
+                    auto end_merge = std::chrono::high_resolution_clock::now();
+
+                    auto quick_time = end_quick - start_quick; // calc time elapsed
+                    auto merge_time = end_merge - start_merge;
+                        // this is the time taken in nanoseconds for both sorting algorithms
+                        long long  ns_quick = std::chrono::duration_cast<chrono::nanoseconds>(quick_time).count();
+                        long long  ns_merge = std::chrono::duration_cast<chrono::nanoseconds>(merge_time).count();
                     sightingData.setString(sightingsString(sightings, page_num));
                 }
 
@@ -165,11 +175,7 @@ void startWindow(UFOlist& ufolist) {
                     sightingData.setString(sightingsString(sightings, page_num));
                 }
             }
-
-            ///add positions for buttons
         }
-        // -180 to 180
-        // -90 to 90
 
         screen.usaMap.display();
         toolbox.window.clear();
@@ -178,6 +184,7 @@ void startWindow(UFOlist& ufolist) {
         toolbox.window.draw(mapSprite);
         toolbox.window.draw(window1);
         toolbox.window.draw(window2);
+        toolbox.window.draw(window3);
 
         //draw buttons
 

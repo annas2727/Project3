@@ -14,6 +14,7 @@ public:
 
     sf::Texture window1;
     sf::Texture window2;
+    sf::Texture window3;
     sf::Texture mapTexture;
     sf::Texture redLineV;
     sf::Texture redLineH;
