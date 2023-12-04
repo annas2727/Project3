@@ -1,4 +1,4 @@
-//
+ //
 // Created by Anna Sicoli on 11/28/23.
 //
 
@@ -36,4 +36,16 @@ Toolbox::Toolbox() {
     downButton = new Button(sf::Vector2f(730 + window2.getSize().x/2 - downButtonTexture.getSize().x/2, 500), decreasePage); // Resets / starts new game
     downButton->setSprite(&sprite); //sets sprite
     downButton->getSprite()->setPosition(downButton->getPosition());
+
+    sf::Sprite timeSprite;
+    timeSprite.setTexture(timeButtonTexture);
+    timeButton = new Button(sf::Vector2f(35, 440), increasePage); // Resets / starts new game
+    timeButton->setSprite(&timeSprite);
+    timeButton->getSprite()->setPosition(timeButton->getPosition());
+
+    sf::Sprite xSprite;
+    xSprite.setTexture(xButtonTexture);
+    xButton = new Button(sf::Vector2f(665, 440), decreasePage); // Resets / starts new game
+    xButton->setSprite(&xSprite);
+    xButton->getSprite()->setPosition(xButton->getPosition());
 }

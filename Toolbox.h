@@ -28,6 +28,9 @@ public:
     sf::CircleShape circle;
     Button* upButton;
     Button* downButton;
+    Button* timeButton;
+    Button* xButton;
+
     int page = 0;
 
     static Toolbox &getInstance() //ensures that there is only one window
