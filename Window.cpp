@@ -103,7 +103,7 @@ void startWindow(UFOlist& ufolist) {
     timeline.setPosition(35, 450);
     timeline.setFillColor(sf::Color::Green);
 
-    Screen screen;
+Screen screen;
     std::vector <std::vector <float>> locations = {{-128, 25}, {-127, 26}, {-90, 30}};
 
     vector<UFOsighting> sightings, sightings2;
@@ -199,6 +199,13 @@ void startWindow(UFOlist& ufolist) {
                         page_num -= 6;
                     }
                     sightingData.setString(sightingsString(sightings, page_num));
+                }
+                if (position.x > toolbox.timeButton->getPosition().x
+                    and position.x < toolbox.timeButton->getPosition().x + toolbox.timeButtonTexture.getSize().x
+                    and position.y > toolbox.timeButton->getPosition().y
+                    and position.y < toolbox.timeButton->getPosition().y + toolbox.timeButtonTexture.getSize().y) {
+                    toolbox.timeButton->onClick();
+
                 }
             }
         }
