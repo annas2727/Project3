@@ -99,6 +99,10 @@ void startWindow(UFOlist& ufolist) {
     sightingData.setPosition(745, 135);
     sightingData.setStyle(sf::Text::Bold);
 
+    sf::RectangleShape timeline(sf::Vector2f(620, 10));
+    timeline.setPosition(35, 450);
+    timeline.setFillColor(sf::Color::Green);
+
     Screen screen;
     std::vector <std::vector <float>> locations = {{-128, 25}, {-127, 26}, {-90, 30}};
 
@@ -202,17 +206,18 @@ void startWindow(UFOlist& ufolist) {
         screen.usaMap.display();
         toolbox.window.clear();
 
-
-        toolbox.window.draw(mapSprite);
         toolbox.window.draw(window1);
         toolbox.window.draw(window2);
         toolbox.window.draw(window3);
+
+        toolbox.window.draw(timeline);
 
         //draw buttons
 
         toolbox.window.draw(*(toolbox.upButton->getSprite()));
         toolbox.window.draw(*(toolbox.downButton->getSprite()));
-
+        toolbox.window.draw(*(toolbox.timeButton->getSprite()));
+        toolbox.window.draw(*(toolbox.xButton->getSprite()));
 
         sf::Sprite world(screen.usaMap.getTexture()); //have to convert renderTexture back into sprite
         world.setPosition(screen.xpos, screen.ypos);
@@ -235,4 +240,21 @@ void increasePage(){ //returns position
 void decreasePage(){ //returns position
     Toolbox& toolbox = toolbox.getInstance();
     toolbox.page--;
+}
+
+void timeScroll(UFOlist& ufolist) {
+    Toolbox &toolbox = toolbox.getInstance();
+    ufo_grid all_sightings = ufolist.GetGrid();
+    for (auto &row: all_sightings) {
+        for (auto &sightings_at_location: row) {
+            for (auto &sighting: sightings_at_location) {
+                // IF DATE = (GET DATE FROM CLICK WITHIN RECTANGLE)
+                // RECTANGLE (X -> 620)
+                // ufo_grid
+                return;
+            }
+        }
+    }
+}
+void exit() {
 }

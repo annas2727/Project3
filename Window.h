@@ -9,4 +9,6 @@
 void startWindow(UFOlist& ufolist);
 void increasePage(); //onclick action
 void decreasePage(); //onclick action
+void timeScroll(UFOlist& ufolist);
+void exit();
 

@@ -20,7 +20,8 @@ public:
     sf::Texture redLineH;
     sf::Texture upButtonTexture;
     sf::Texture downButtonTexture;
-    //Screen worldMap;
+    sf::Texture timeButtonTexture;
+    sf::Texture xButtonTexture;
 
     sf::Font font;
     sf::Color green;
