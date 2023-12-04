@@ -26,14 +26,17 @@ class UFOlist {
     // Initializes ufo grid
     ufo_grid GridInitializer();
     // Populates ufo grid
-    ufo_grid UFOread(string file);
+    pair<ufo_grid, vector<UFOsighting>> UFOread(string file);
     // Container for CSV information
     ufo_grid UFOs;
-    // Not yet implemented
+    // Container for all info sightings in a single vector
+    vector<UFOsighting> all_sightings;
 public:
     UFOlist(string file);
 
     ufo_grid GetGrid();
+    vector<UFOsighting> GetAllSightings();
+
     // First -> bool to check if grid is populated (don't want to display initializer values)
     // Second-> Gets vector of sighting given an exact X, Y
     pair<bool, vector<UFOsighting>> GetSightingsAt(double y, double x); // latitude then longitude
