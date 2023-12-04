@@ -136,7 +136,11 @@ void startWindow() {
                     toolbox.timePos = position.x;
                     toolbox.timeButton->onClick();
                     toolbox.timeButton->getSprite()->setPosition(position.x - toolbox.timeButtonTexture.getSize().x/2, 440);
-                    time.setString ("Click on the map to see all the UFOs at a date. The first date is ");
+                    time.setString ("Click on the map to see \n"
+                                    "all the UFOs at a date. \n"
+                                    "The first date is \n"
+                                    "01/01/1969 and the most \n"
+                                    "recent is 12/22/2022 \n");
                     mergeText.setString ("Merge sort: " + to_string(toolbox.merge_all) + " ms");
                     quickText.setString ("Quick sort: " + to_string(toolbox.quick_all) + " ms");
                 }
