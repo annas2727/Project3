@@ -10,6 +10,46 @@
 #include "QuickSort.h"
 #include "MergeSort.h"
 
+// checks the length of a string so that it does not extend past the edge of the borders
+string lengthCheck(string base) {
+    int size = base.size();
+    if (size > 19) {
+        base.erase(16, base.size() - 16);
+        base += "...";
+    }
+    return base;
+}
+
+// generates the data that appears on the right side
+string sightingsString(vector<UFOsighting> &sightings, const int &page_num) {
+    string str;
+    for (int i = page_num; i < sightings.size(); i++) {
+        if (i == page_num + 6) { // maximum UFO data to display
+            break;
+        }
+        if (sightings.at(i).date == -1) {
+            str = "No UFO's Sighted";
+            break;
+        }
+        string date = to_string(sightings.at(i).date);
+        string year = date.substr(0, 4);
+        string month = date.substr(4, 2);
+        string day = date.substr(6, 2);
+        str += month;
+        str += "/";
+        str += day;
+        str += "/";
+        str += year;
+        str += "\nDuration: ";
+        str += lengthCheck(sightings.at(i).duration);
+        str += "\nShape: ";
+        str += lengthCheck(sightings.at(i).shape);
+        str += "\n\n";
+    }
+    return str;
+}
+
+
 void startWindow(UFOlist& ufolist) {
 
     Toolbox &toolbox = Toolbox::getInstance();
@@ -25,23 +65,31 @@ void startWindow(UFOlist& ufolist) {
     sf::Text cursorPosition;
 
     cursorPosition.setFont(toolbox.font);
-    cursorPosition.setCharacterSize(16);
+    cursorPosition.setCharacterSize(13);
     cursorPosition.setFillColor(toolbox.green);
     cursorPosition.setFillColor(sf::Color::Green);
-    cursorPosition.setPosition(745, 60);
+    cursorPosition.setPosition(745, 110);
 
     // created by Aidan 12:47 12/3
     sf::Text sightingData;
 
     sightingData.setFont(toolbox.font);
-    sightingData.setCharacterSize(16);
+    sightingData.setCharacterSize(13);
     sightingData.setFillColor(toolbox.green);
     sightingData.setFillColor(sf::Color::Green);
-    sightingData.setPosition(745, 110);
+    sightingData.setPosition(745, 135);
     sightingData.setStyle(sf::Text::Bold);
+
 
     Screen screen;
     std::vector <std::vector <float>> locations = {{-128, 25}, {-127, 26}, {-90, 30}};
+
+    vector<UFOsighting> sightings;
+    int longitude;
+    int latitude;
+    int page_num = 0; // increment/decrement this num by 6 as the user pages up and down to see the UFO data
+    bool quick = true;
+
     while (toolbox.window.isOpen()) {
         sf::Event event;
 
@@ -68,38 +116,29 @@ void startWindow(UFOlist& ufolist) {
                     screen.updateLines(position.x, position.y);
 
                     // Edited by Aidan 12:12 PM 12/3
-
-                    int longitude = static_cast<int>(screen.getLongitude(position.x - screen.xpos));
-                    int latitude = static_cast<int>(screen.getLatitude(position.y - screen.ypos));
+                    page_num = 0;
+                    longitude = static_cast<int>(screen.getLongitude(position.x - screen.xpos));
+                    latitude = static_cast<int>(screen.getLatitude(position.y - screen.ypos));
 
                     // positions of latitude and longitude are swapped in GetSigthingsAt method
-                    vector<UFOsighting> sightings = ufolist.GetSightingsAt(latitude, longitude).second;
-                    quickSort(sightings, 0, sightings.size() - 1); // have an if statement for when to sort by merge or quick
+                    // get sightings
+                    sightings = ufolist.GetSightingsAt(latitude, longitude).second;
 
-                    string sightingsString = "";
-                    for (const auto& sight : sightings) {
-                        if (sight.date == -1) {
-                            sightingsString = "No UFOs Sighted";
-                            break;
-                         }
-                        string date = to_string(sight.date);
-                        string year = date.substr(0, 4);
-                        string month = date.substr(4, 2);
-                        string day = date.substr(6, 2);
-                        sightingsString += month;
-                        sightingsString += "/";
-                        sightingsString += day;
-                        sightingsString += "/";
-                        sightingsString += year;
-                        sightingsString += "\nDuration: ";
-                        sightingsString += sight.duration;
-                        sightingsString += "\nShape: ";
-                        sightingsString += sight.shape;
-                        sightingsString += "\n\n";
+                    // sort sightings either with quick sort or merge sort
+                    if (quick) {
+                        quickSort(sightings, 0, sightings.size() - 1);
                     }
-                    sightingData.setString(sightingsString);
+                    else {
+                        mergeSort(sightings, 0, sightings.size() - 1);
+                    }
+
+                    sightingData.setString(sightingsString(sightings, page_num));
                 }
+
+                //this is going to have to find and print all the surrounding UFOs
+                // SELECT count(*) FROM nuforc_reports where city_longitude is not null and country = "USA"
             }
+
             //Edited by Anna on 12/3 at 5:43 PM
             if (event.type == sf::Event::MouseButtonPressed) {//on mouse click for upButton
                 sf::Vector2i position = sf::Mouse::getPosition(toolbox.window); //gets mouse pos relative to window
@@ -108,21 +147,33 @@ void startWindow(UFOlist& ufolist) {
                     and position.y > toolbox.upButton->getPosition().y
                     and position.y < toolbox.upButton->getPosition().y + toolbox.upButtonTexture.getSize().y) {
                     toolbox.upButton->onClick();
-                    //cout << "up";
+                    page_num -= 6;
+                    if (page_num < 0) {
+                        page_num += 6;
+                    }
+                    sightingData.setString(sightingsString(sightings, page_num));
                 }
                 if (position.x > toolbox.downButton->getPosition().x
                     and position.x < toolbox.downButton->getPosition().x + toolbox.downButtonTexture.getSize().x
                     and position.y > toolbox.downButton->getPosition().y
                     and position.y < toolbox.downButton->getPosition().y + toolbox.downButtonTexture.getSize().y) { //down button
                     toolbox.downButton->onClick();
-                    //cout << "down" << endl;
+                    page_num += 6;
+                    if (page_num > sightings.size() - 1) {
+                        page_num -= 6;
+                    }
+                    sightingData.setString(sightingsString(sightings, page_num));
                 }
             }
 
             ///add positions for buttons
         }
+        // -180 to 180
+        // -90 to 90
+
         screen.usaMap.display();
         toolbox.window.clear();
+
 
         toolbox.window.draw(mapSprite);
         toolbox.window.draw(window1);
@@ -132,6 +183,7 @@ void startWindow(UFOlist& ufolist) {
 
         toolbox.window.draw(*(toolbox.upButton->getSprite()));
         toolbox.window.draw(*(toolbox.downButton->getSprite()));
+
 
         sf::Sprite world(screen.usaMap.getTexture()); //have to convert renderTexture back into sprite
         world.setPosition(screen.xpos, screen.ypos);
@@ -144,6 +196,7 @@ void startWindow(UFOlist& ufolist) {
         toolbox.window.display();
     }
 }
+
 void increasePage(){ //returns position
     Toolbox& toolbox = toolbox.getInstance();
     toolbox.page++;
