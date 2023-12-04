@@ -37,9 +37,13 @@ public:
     bool toggleLines;
     bool toggleTimeline;
 
-    vector<sf::CircleShape*> circles;
+    long long merge_all;
+    long long quick_all;
+
+    vector<pair <int, sf::CircleShape>> circles; //stores the number of ufos at each point adjusts the circle according
 
     int page = 0;
+    int timePos = 0;
 
     static Toolbox &getInstance() //ensures that there is only one window
     {
