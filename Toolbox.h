@@ -37,6 +37,8 @@ public:
     bool toggleLines;
     bool toggleTimeline;
 
+    vector<sf::CircleShape*> circles;
+
     int page = 0;
 
     static Toolbox &getInstance() //ensures that there is only one window

@@ -118,11 +118,48 @@ void startWindow() {
             if (event.type == sf::Event::Closed)
                 toolbox.window.close();
 
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {//on left click
+            sf::Vector2i position = sf::Mouse::getPosition(toolbox.window); //gets mouse pos relative to window
 
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {//on left click
+                //left click basically makes it a scroll bar
                 //also add bounds to make it inside the world window
-                sf::Vector2i position = sf::Mouse::getPosition(
-                        toolbox.window); //gets position of cursor relative to window
+            }
+
+            //Edited by Anna on 12/3 at 5:43 PM
+            if (event.type == sf::Event::MouseButtonPressed) {//on mouse click for upButton
+                if (position.x > toolbox.upButton->getPosition().x
+                    and position.x < toolbox.upButton->getPosition().x + toolbox.upButtonTexture.getSize().x
+                    and position.y > toolbox.upButton->getPosition().y
+                    and position.y < toolbox.upButton->getPosition().y + toolbox.upButtonTexture.getSize().y) {
+                    toolbox.upButton->onClick();
+                    page_num -= 6;
+                    if (page_num < 0) {
+                        page_num += 6;
+                    }
+                    sightingData.setString(sightingsString(sightings, page_num));
+                }
+                if (position.x > toolbox.downButton->getPosition().x
+                    and position.x < toolbox.downButton->getPosition().x + toolbox.downButtonTexture.getSize().x
+                    and position.y > toolbox.downButton->getPosition().y
+                    and position.y < toolbox.downButton->getPosition().y + toolbox.downButtonTexture.getSize().y) { //down button
+                    toolbox.downButton->onClick();
+                    page_num += 6;
+                    if (page_num > sightings.size() - 1) {
+                        page_num -= 6;
+                    }
+                    sightingData.setString(sightingsString(sightings, page_num));
+                }
+                //this clicks on the reset button to clear the timeline and map
+                if (position.x > toolbox.xButton->getPosition().x
+                    and position.x < toolbox.xButton->getPosition().x + toolbox.xButtonTexture.getSize().x
+                    and position.y > toolbox.xButton->getPosition().y
+                    and position.y < toolbox.xButton->getPosition().y + toolbox.xButtonTexture.getSize().y) {
+                    toolbox.xButton->onClick();
+                    //clears info about the latest cursor click off the screen
+                    screen.updateLines(-1,-1);
+                    cursorPosition.setString("");
+                    sightingData.setString("");
+                }
                 if ((position.x > screen.xpos) and (position.x < screen.usaMap.getSize().x + screen.xpos) and
                     (position.y > screen.ypos) and (position.y < screen.usaMap.getSize().y + screen.ypos) and
                     toolbox.toggleTimeline == false) {
@@ -175,33 +212,7 @@ void startWindow() {
 
                 //this is going to have to find and print all the surrounding UFOs
                 // SELECT count(*) FROM nuforc_reports where city_longitude is not null and country = "USA"
-            }
 
-            //Edited by Anna on 12/3 at 5:43 PM
-            if (event.type == sf::Event::MouseButtonPressed) {//on mouse click for upButton
-                sf::Vector2i position = sf::Mouse::getPosition(toolbox.window); //gets mouse pos relative to window
-                if (position.x > toolbox.upButton->getPosition().x
-                    and position.x < toolbox.upButton->getPosition().x + toolbox.upButtonTexture.getSize().x
-                    and position.y > toolbox.upButton->getPosition().y
-                    and position.y < toolbox.upButton->getPosition().y + toolbox.upButtonTexture.getSize().y) {
-                    toolbox.upButton->onClick();
-                    page_num -= 6;
-                    if (page_num < 0) {
-                        page_num += 6;
-                    }
-                    sightingData.setString(sightingsString(sightings, page_num));
-                }
-                if (position.x > toolbox.downButton->getPosition().x
-                    and position.x < toolbox.downButton->getPosition().x + toolbox.downButtonTexture.getSize().x
-                    and position.y > toolbox.downButton->getPosition().y
-                    and position.y < toolbox.downButton->getPosition().y + toolbox.downButtonTexture.getSize().y) { //down button
-                    toolbox.downButton->onClick();
-                    page_num += 6;
-                    if (page_num > sightings.size() - 1) {
-                        page_num -= 6;
-                    }
-                    sightingData.setString(sightingsString(sightings, page_num));
-                }
                 //this clicks on the timeline rectangle
                 if (position.x > timeline.getPosition().x
                     and position.x < timeline.getPosition().x + timeline.getSize().x
@@ -210,14 +221,6 @@ void startWindow() {
                     and toolbox.toggleLines == false) {
                     toolbox.timeButton->onClick();
                     toolbox.timeButton->getSprite()->setPosition(position.x - toolbox.timeButtonTexture.getSize().x/2, 440);
-                }
-                //this clicks on the reset button to clear the timeline and map
-                if (position.x > toolbox.xButton->getPosition().x
-                    and position.x < toolbox.xButton->getPosition().x + toolbox.xButtonTexture.getSize().x
-                    and position.y > toolbox.xButton->getPosition().y
-                    and position.y < toolbox.xButton->getPosition().y + toolbox.xButtonTexture.getSize().y) {
-                    toolbox.xButton->onClick();
-                    screen.updateLines(-1,-1);
                 }
             }
         }
@@ -239,6 +242,7 @@ void startWindow() {
         toolbox.window.draw(*(toolbox.xButton->getSprite()));
 
         sf::Sprite world(screen.usaMap.getTexture()); //have to convert renderTexture back into sprite
+
         world.setPosition(screen.xpos, screen.ypos);
         toolbox.window.draw(world);
 
@@ -246,6 +250,13 @@ void startWindow() {
         toolbox.window.draw(mergeText);
         toolbox.window.draw(quickText);
         toolbox.window.draw(sightingData);
+
+        //this draws all the circles, but only if toggleTimeline is true
+        if (toolbox.toggleTimeline == true) {
+            for (int i = 0; i < toolbox.circles.size(); i++) {
+                toolbox.window.draw(*toolbox.circles[i]);
+            }
+        }
 
         toolbox.window.display();
     }
@@ -267,11 +278,14 @@ void timeScroll(){
     for (auto &row: all_sightings) {
         for (auto &sightings_at_location: row) {
             for (auto &sighting: sightings_at_location) {
-
                 // IF DATE = (GET DATE FROM CLICK WITHIN RECTANGLE)
                 // RECTANGLE (X -> 620)
                 // ufo_grid
-                return;
+                sf::CircleShape circle;
+                circle.setFillColor(sf::Color::White);
+                circle.setRadius(1);
+                //we need to make this bigger based on how many UFOs
+                toolbox.circles.push_back(&circle);
             }
         }
     }
