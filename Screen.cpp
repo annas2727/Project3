@@ -4,7 +4,6 @@
 
 #include "Screen.h"
 #include "Toolbox.h"
-#include <iostream>
 
 Screen::Screen(){
     Toolbox& toolbox = Toolbox::getInstance();

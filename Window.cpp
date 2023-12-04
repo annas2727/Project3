@@ -5,10 +5,10 @@
 #include "Window.h"
 #include "Toolbox.h"
 #include "Screen.h"
-#include <iostream>
-#include <vector>
 #include "QuickSort.h"
 #include "MergeSort.h"
+#include <iostream>
+#include <vector>
 
 // checks the length of a string so that it does not extend past the edge of the borders of the right pane
 string lengthCheck(string base) {
@@ -182,6 +182,7 @@ void startWindow() {
                     cursorPosition.setString("");
                     sightingData.setString("");
                     time.setString("");
+                    toolbox.timeButton->getSprite()->setPosition(35, 440);
                 }
                 if ((position.x > screen.xpos) and (position.x < screen.usaMap.getSize().x + screen.xpos) and
                     (position.y > screen.ypos) and (position.y < screen.usaMap.getSize().y + screen.ypos) and
