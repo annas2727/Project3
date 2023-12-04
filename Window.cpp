@@ -73,6 +73,22 @@ void startWindow(UFOlist& ufolist) {
     cursorPosition.setFillColor(sf::Color::Green);
     cursorPosition.setPosition(745, 110);
 
+    sf::Text quickText;
+    quickText.setFont(toolbox.font);
+    quickText.setCharacterSize(21);
+    quickText.setFillColor(toolbox.green);
+    quickText.setFillColor(sf::Color::Green);
+    quickText.setStyle(sf::Text::Bold);
+    quickText.setPosition(35, 538);
+
+    sf::Text mergeText;
+    mergeText.setFont(toolbox.font);
+    mergeText.setCharacterSize(21);
+    mergeText.setFillColor(toolbox.green);
+    mergeText.setFillColor(sf::Color::Green);
+    mergeText.setStyle(sf::Text::Bold);
+    mergeText.setPosition(35, 565);
+
     // created by Aidan 12:47 12/3
     sf::Text sightingData;
 
@@ -82,7 +98,6 @@ void startWindow(UFOlist& ufolist) {
     sightingData.setFillColor(sf::Color::Green);
     sightingData.setPosition(745, 135);
     sightingData.setStyle(sf::Text::Bold);
-
 
     Screen screen;
     std::vector <std::vector <float>> locations = {{-128, 25}, {-127, 26}, {-90, 30}};
@@ -139,9 +154,14 @@ void startWindow(UFOlist& ufolist) {
 
                     auto quick_time = end_quick - start_quick; // calc time elapsed
                     auto merge_time = end_merge - start_merge;
-                        // this is the time taken in nanoseconds for both sorting algorithms
-                        long long  ns_quick = std::chrono::duration_cast<chrono::nanoseconds>(quick_time).count();
-                        long long  ns_merge = std::chrono::duration_cast<chrono::nanoseconds>(merge_time).count();
+                    // this is the time taken in nanoseconds for both sorting algorithms
+                    long long  ns_quick = std::chrono::duration_cast<chrono::nanoseconds>(quick_time).count();
+                    long long  ns_merge = std::chrono::duration_cast<chrono::nanoseconds>(merge_time).count();
+
+                    //adds the time it takes for quick sort vs merge sort to complete
+                    quickText.setString ("Quick Sort: " + to_string(ns_quick) + " ns");
+                    mergeText.setString("Merge Sort: " + to_string(ns_merge) + " ns");
+
                     sightingData.setString(sightingsString(sightings, page_num));
                 }
 
@@ -197,7 +217,8 @@ void startWindow(UFOlist& ufolist) {
         toolbox.window.draw(world);
 
         toolbox.window.draw(cursorPosition);
-
+        toolbox.window.draw(mergeText);
+        toolbox.window.draw(quickText);
         toolbox.window.draw(sightingData);
 
         toolbox.window.display();
