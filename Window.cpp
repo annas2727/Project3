@@ -53,10 +53,12 @@ string sightingsString(vector<UFOsighting> &sightings, const int &page_num) {
 void startWindow() {
 
     Toolbox &toolbox = Toolbox::getInstance();
+    //to get all of the things stored in the toolbox
 
     //I put the sprites in here because they might need to be edited
     sf::Sprite mapSprite(toolbox.mapTexture); //create the sprite for the map
 
+    //sets the sprites and position for all of the windows
     sf::Sprite window1(toolbox.window1);
     window1.setPosition(20, 20);
 
@@ -67,17 +69,25 @@ void startWindow() {
     sf::Sprite window3(toolbox.window3);
     window3.setPosition(20, 500);
 
+    //this draws the text that says where the cursor is clicking
     cursorPosition.setFont(toolbox.font);
     cursorPosition.setCharacterSize(13);
     cursorPosition.setFillColor(sf::Color::Green);
     cursorPosition.setPosition(745, 110);
 
+    //this is used for heat map mode. This prints the directions for using heat map mode
     sf::Text time;
     time.setFont(toolbox.font);
     time.setCharacterSize(18);
     time.setFillColor(sf::Color::Green);
     time.setPosition(745, 110);
+    time.setString ("Click on the map to see \n"
+                    "all the UFOs at a date. \n"
+                    "The first date is \n"
+                    "01/01/1969 and the most \n"
+                    "recent is 12/22/2022 \n");
 
+    //sets up the text for printing how fast quick sort is
     sf::Text quickText;
     quickText.setFont(toolbox.font);
     quickText.setCharacterSize(21);
@@ -85,6 +95,7 @@ void startWindow() {
     quickText.setStyle(sf::Text::Bold);
     quickText.setPosition(35, 538);
 
+    //sets up the text for printing how fast merge sort is
     sf::Text mergeText;
     mergeText.setFont(toolbox.font);
     mergeText.setCharacterSize(21);
@@ -103,22 +114,25 @@ void startWindow() {
     sightingData.setPosition(745, 135);
     sightingData.setStyle(sf::Text::Bold);
 
+    //Neon green rectangle. This is what the use clicks on to toggle the heat map timeline
+    //This is especially important in getting the x value, needed for toggling the tiimeline
     sf::RectangleShape timeline(sf::Vector2f(620, 10));
     timeline.setPosition(35, 450);
     timeline.setFillColor(sf::Color::Green);
 
     Screen screen;
     std::vector <std::vector <float>> locations = {{-128, 25}, {-127, 26}, {-90, 30}};
+    //these are the borders
 
     vector<UFOsighting> sightings, sightings2;
     int longitude;
     int latitude;
     int page_num = 0; // increment/decrement this num by 6 as the user pages up and down to see the UFO data
 
-    while (toolbox.window.isOpen()) {
+    while (toolbox.window.isOpen()) { //starts window
         sf::Event event;
 
-        while (toolbox.window.pollEvent(event)) {
+        while (toolbox.window.pollEvent(event)) { //while the window isn't closed
             if (event.type == sf::Event::Closed)
                 toolbox.window.close();
 
@@ -126,22 +140,18 @@ void startWindow() {
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {//on left click
                 //left click basically makes it a scroll bar
-                //also add bounds to make it inside the world window
+                //this makes sure the cursor is in the bounds of the timeline
                 if (position.x > timeline.getPosition().x
                     and position.x < timeline.getPosition().x + timeline.getSize().x
                     and position.y > timeline.getPosition().y
                     and position.y < timeline.getPosition().y + timeline.getSize().y
                     and toolbox.toggleLines == false) {
 
-                    toolbox.circles.clear();
-                    toolbox.timePos = position.x;
-                    toolbox.timeButton->onClick();
+                    toolbox.circles.clear(); //clears last click's circles
+                    toolbox.timePos = position.x; //moves the button
+                    toolbox.timeButton->onClick(); //function to change the circles
                     toolbox.timeButton->getSprite()->setPosition(position.x - toolbox.timeButtonTexture.getSize().x/2, 440);
-                    time.setString ("Click on the map to see \n"
-                                    "all the UFOs at a date. \n"
-                                    "The first date is \n"
-                                    "01/01/1969 and the most \n"
-                                    "recent is 12/22/2022 \n");
+                    //prints how fast each sort is
                     mergeText.setString ("Merge sort: " + to_string(toolbox.merge_all) + " ms");
                     quickText.setString ("Quick sort: " + to_string(toolbox.quick_all) + " ms");
                 }
@@ -153,8 +163,9 @@ void startWindow() {
                     and position.x < toolbox.upButton->getPosition().x + toolbox.upButtonTexture.getSize().x
                     and position.y > toolbox.upButton->getPosition().y
                     and position.y < toolbox.upButton->getPosition().y + toolbox.upButtonTexture.getSize().y) {
+                    //makes sure the click is in the bounds of the up button
                     toolbox.upButton->onClick();
-                    page_num -= 6;
+                    page_num -= 6; //scrolls through pages
                     if (page_num < 0) {
                         page_num += 6;
                     }
@@ -164,8 +175,9 @@ void startWindow() {
                     and position.x < toolbox.downButton->getPosition().x + toolbox.downButtonTexture.getSize().x
                     and position.y > toolbox.downButton->getPosition().y
                     and position.y < toolbox.downButton->getPosition().y + toolbox.downButtonTexture.getSize().y) { //down button
+                    //makes sure the click is in the bounds of the downbutton
                     toolbox.downButton->onClick();
-                    page_num += 6;
+                    page_num += 6; //scrolls through pages
                     if (page_num > sightings.size() - 1) {
                         page_num -= 6;
                     }
@@ -177,26 +189,28 @@ void startWindow() {
                     and position.y > toolbox.xButton->getPosition().y
                     and position.y < toolbox.xButton->getPosition().y + toolbox.xButtonTexture.getSize().y) {
                     toolbox.xButton->onClick();
+                    //makes sure click is in bounds of the xbutton
                     //clears info about the latest cursor click off the screen
                     screen.updateLines(-1,-1);
                     cursorPosition.setString("");
                     sightingData.setString("");
                     time.setString("");
-                    toolbox.timeButton->getSprite()->setPosition(35, 440);
+                    toolbox.timeButton->getSprite()->setPosition(35, 440); //resets it to the initial position at the beginning of the timeline
                 }
                 if ((position.x > screen.xpos) and (position.x < screen.usaMap.getSize().x + screen.xpos) and
                     (position.y > screen.ypos) and (position.y < screen.usaMap.getSize().y + screen.ypos) and
                     toolbox.toggleTimeline == false) {
-                    toolbox.toggleLines = true;
-                    time.setString("");
+                    //checks if the click is on the map
+                    toolbox.toggleLines = true; //this is important so that the line and heat map don't show up at the same time
+                    time.setString(""); //this clears the directions for the heatmap off of the screen
 
                     //this draws the mouse click
                     cursorPosition.setStyle(sf::Text::Bold);
                     cursorPosition.setString("(" + std::to_string(screen.getLongitude(position.x - screen.xpos)) + ", " +
                                              std::to_string(screen.getLatitude(position.y - screen.ypos)) + ")");
-
+                    //prints coordinate that was clicked on the map in terms of latiude and longitude
                     std::string str = cursorPosition.getString();
-                    screen.updateLines(position.x, position.y);
+                    screen.updateLines(position.x, position.y); //moves the red lines to be at the click on the map
 
                     // Edited by Aidan 12:12 PM 12/3
                     page_num = 0;
@@ -237,6 +251,7 @@ void startWindow() {
         screen.usaMap.display();
         toolbox.window.clear();
 
+        //displays the windows
         toolbox.window.draw(window1);
         toolbox.window.draw(window2);
         toolbox.window.draw(window3);
@@ -244,7 +259,6 @@ void startWindow() {
         toolbox.window.draw(timeline);
 
         //draw buttons
-
         toolbox.window.draw(*(toolbox.upButton->getSprite()));
         toolbox.window.draw(*(toolbox.downButton->getSprite()));
         toolbox.window.draw(*(toolbox.timeButton->getSprite()));
@@ -252,9 +266,10 @@ void startWindow() {
 
         sf::Sprite world(screen.usaMap.getTexture()); //have to convert renderTexture back into sprite
 
-        world.setPosition(screen.xpos, screen.ypos);
+        world.setPosition(screen.xpos, screen.ypos); //this is slightly different because it is a render texture. It has to be a render texture so you can draw the lines
         toolbox.window.draw(world);
 
+        //draw text (which is sometimes "" depending on the click and toggle statuses)
         toolbox.window.draw(cursorPosition);
         toolbox.window.draw(mergeText);
         toolbox.window.draw(quickText);
@@ -262,10 +277,7 @@ void startWindow() {
         toolbox.window.draw(time);
 
         //this draws all the circles, but only if toggleTimeline is true
-
-
-        //toolbox.window.draw(circle);
-
+        //draws all the circles for the heatmap timeline
         if (toolbox.toggleTimeline == true) {
             for (int i = 0; i < toolbox.circles.size(); i++) {
                 toolbox.window.draw(toolbox.circles[i].second);
@@ -276,17 +288,17 @@ void startWindow() {
     }
 }
 
-void increasePage(){
+void increasePage(){ //function for upButton
     Toolbox& toolbox = toolbox.getInstance();
     toolbox.page++;
 }
 
-void decreasePage(){
+void decreasePage(){ //function for downButton
     Toolbox& toolbox = toolbox.getInstance();
     toolbox.page--;
 }
 
-void timeScroll(){
+void timeScroll(){ //function for timeline scroll button
     Toolbox &toolbox = toolbox.getInstance();
     toolbox.toggleTimeline = true;
     // toolbox.timePos is where x is stored since this function can't have parameters
@@ -355,7 +367,7 @@ void timeScroll(){
     }
 
 }
-void reset(){
+void reset(){ //function for xButton
     Toolbox& toolbox = toolbox.getInstance();
     toolbox.toggleTimeline = false;
     toolbox.toggleLines = false;
