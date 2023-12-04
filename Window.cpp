@@ -31,6 +31,7 @@ string sightingsString(vector<UFOsighting> &sightings, const int &page_num) {
             str = "No UFOs Sighted";
             break;
         }
+        //converts YYYYMMDD which is how it is stored to sort it to MM/DD/YYYY to print it
         string date = to_string(sightings.at(i).date);
         string year = date.substr(0, 4);
         string month = date.substr(4, 2);
@@ -340,8 +341,9 @@ void timeScroll(){
         int longitude_range = 63;
         int latitude_range = 31;
 
+        //converts latitude and longitude to x and y pos relative to the map
         int x_position = (sighting.coordinate.second + 128) * (double)(map_width_x / longitude_range) + map_offset_x;
-        int y_position = (sighting.coordinate.first - 23) * (double)(map_width_y / latitude_range) + map_offset_y;
+        int y_position = (54 - sighting.coordinate.first) * (double)(map_width_y / latitude_range) + map_offset_y;
 
         int circle_radius = 2;
         for (int i = 0; i < toolbox.circles.size(); i++) {
@@ -349,7 +351,6 @@ void timeScroll(){
             and toolbox.circles[i].second.getPosition().y == y_position) {
                 circle_radius += 2;
             }
-
         }
         sf::CircleShape circle(circle_radius);
         circle.setPosition(x_position,y_position);
@@ -365,11 +366,3 @@ void reset(){
     toolbox.toggleLines = false;
 
 }
-
-/*
-        for (auto circle : toolbox.circles) {
-
-            if (circle.getPosition().x  and circle.getPosition().y) {
-
-            }
-        }*/
