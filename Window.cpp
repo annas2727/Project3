@@ -142,8 +142,10 @@ void startWindow(UFOlist& ufolist) {
                     sightings = ufolist.GetSightingsAt(latitude, longitude).second;
                     sightings2 = sightings;
 
-                    // sort sightings either with quick sort and merge sort
-                    // compare times of each
+                    // sort sightings with quick sort and merge sort
+                    // compare times of each algortihm
+
+                    //Edited by Carter 9:41 PM 12/3
                     auto start_quick = chrono::high_resolution_clock ::now();
                     quickSort(sightings, 0, sightings.size() - 1);
                     auto end_quick = std::chrono::high_resolution_clock::now();
