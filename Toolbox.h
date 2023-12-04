@@ -5,12 +5,15 @@
 #include <SFML/Graphics.hpp>
 #include "Screen.h"
 #include "Button.h"
+#include "UFO.h"
 
 class Toolbox {
     Toolbox();
 public:
     ~Toolbox() {};
     sf::RenderWindow window;
+
+    UFOlist List = UFOlist("files/UFOPROJECTCSV.csv");
 
     sf::Texture window1;
     sf::Texture window2;

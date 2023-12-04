@@ -50,7 +50,7 @@ string sightingsString(vector<UFOsighting> &sightings, const int &page_num) {
 }
 
 
-void startWindow(UFOlist& ufolist) {
+void startWindow() {
 
     Toolbox &toolbox = Toolbox::getInstance();
 
@@ -143,7 +143,7 @@ Screen screen;
 
                     // positions of latitude and longitude are swapped in GetSigthingsAt method
                     // get sightings
-                    sightings = ufolist.GetSightingsAt(latitude, longitude).second;
+                    sightings = toolbox.List.GetSightingsAt(latitude, longitude).second;
                     sightings2 = sightings;
 
                     // sort sightings with quick sort and merge sort
@@ -249,12 +249,13 @@ void decreasePage(){ //returns position
     toolbox.page--;
 }
 
-void timeScroll(UFOlist& ufolist) {
+void timeScroll() { /*UFOlist& ufolist*/
     Toolbox &toolbox = toolbox.getInstance();
-    ufo_grid all_sightings = ufolist.GetGrid();
+    ufo_grid all_sightings = toolbox.List.GetGrid();
     for (auto &row: all_sightings) {
         for (auto &sightings_at_location: row) {
             for (auto &sighting: sightings_at_location) {
+
                 // IF DATE = (GET DATE FROM CLICK WITHIN RECTANGLE)
                 // RECTANGLE (X -> 620)
                 // ufo_grid

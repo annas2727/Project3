@@ -102,3 +102,4 @@ pair<bool, vector<UFOsighting>> UFOlist::GetSightingsAt(double y, double x) {
    return {containsUFO, UFOs[y_index][x_index]};
 }
 
+

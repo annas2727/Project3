@@ -5,7 +5,6 @@
 int main() {
     // Lazy way to source the file
 
-    UFOlist List("files/UFOPROJECTCSV.csv");
     /*
     // check to see if sorts work
     vector<UFOsighting> og_list = List.GetSightingsAt(40, -90).second; // test nums
@@ -34,5 +33,6 @@ int main() {
         }
     }
     */
-    startWindow(List);
+
+    startWindow();
 }

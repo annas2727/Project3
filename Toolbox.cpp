@@ -5,6 +5,7 @@
 #include "Toolbox.h"
 
 Toolbox::Toolbox() {
+
     window.create(sf::VideoMode(1030, 700), "I Want to Believe");
     font.loadFromFile("files/Courier New Regular.ttf"); //loads font
 
@@ -39,7 +40,7 @@ Toolbox::Toolbox() {
 
     sf::Sprite timeSprite;
     timeSprite.setTexture(timeButtonTexture);
-    timeButton = new Button(sf::Vector2f(35, 440), increasePage); // Resets / starts new game
+    timeButton = new Button(sf::Vector2f(35, 440), timeScroll); // Resets / starts new game
     timeButton->setSprite(&timeSprite);
     timeButton->getSprite()->setPosition(timeButton->getPosition());
 
