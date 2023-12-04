@@ -34,6 +34,9 @@ public:
     Button* timeButton;
     Button* xButton;
 
+    bool toggleLines;
+    bool toggleTimeline;
+
     int page = 0;
 
     static Toolbox &getInstance() //ensures that there is only one window

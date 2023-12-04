@@ -10,5 +10,5 @@ void startWindow();
 void increasePage(); //onclick action
 void decreasePage(); //onclick action
 void timeScroll();
-void exit();
+void reset();
 

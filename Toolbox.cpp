@@ -6,6 +6,9 @@
 
 Toolbox::Toolbox() {
 
+    toggleLines = false;
+    toggleTimeline = false;
+
     window.create(sf::VideoMode(1030, 700), "I Want to Believe");
     font.loadFromFile("files/Courier New Regular.ttf"); //loads font
 
@@ -33,20 +36,22 @@ Toolbox::Toolbox() {
     upButton->setSprite(&sprite); //sets sprite
     upButton->getSprite()->setPosition(upButton->getPosition());
 
+    //set up down button
     sprite.setTexture(downButtonTexture);
-    downButton = new Button(sf::Vector2f(730 + window2.getSize().x/2 - downButtonTexture.getSize().x/2, 500), decreasePage); // Resets / starts new game
+    downButton = new Button(sf::Vector2f(730 + window2.getSize().x/2 - downButtonTexture.getSize().x/2, 500), decreasePage);
     downButton->setSprite(&sprite); //sets sprite
     downButton->getSprite()->setPosition(downButton->getPosition());
 
+    //set up timeline scrolling button
     sf::Sprite timeSprite;
     timeSprite.setTexture(timeButtonTexture);
-    timeButton = new Button(sf::Vector2f(35, 440), timeScroll); // Resets / starts new game
+    timeButton = new Button(sf::Vector2f(35, 440), timeScroll);
     timeButton->setSprite(&timeSprite);
     timeButton->getSprite()->setPosition(timeButton->getPosition());
 
     sf::Sprite xSprite;
     xSprite.setTexture(xButtonTexture);
-    xButton = new Button(sf::Vector2f(665, 440), decreasePage); // Resets / starts new game
+    xButton = new Button(sf::Vector2f(665, 440), reset);
     xButton->setSprite(&xSprite);
     xButton->getSprite()->setPosition(xButton->getPosition());
 }

@@ -103,7 +103,7 @@ void startWindow() {
     timeline.setPosition(35, 450);
     timeline.setFillColor(sf::Color::Green);
 
-Screen screen;
+    Screen screen;
     std::vector <std::vector <float>> locations = {{-128, 25}, {-127, 26}, {-90, 30}};
 
     vector<UFOsighting> sightings, sightings2;
@@ -124,7 +124,9 @@ Screen screen;
                 sf::Vector2i position = sf::Mouse::getPosition(
                         toolbox.window); //gets position of cursor relative to window
                 if ((position.x > screen.xpos) and (position.x < screen.usaMap.getSize().x + screen.xpos) and
-                    (position.y > screen.ypos) and (position.y < screen.usaMap.getSize().y + screen.ypos)) {
+                    (position.y > screen.ypos) and (position.y < screen.usaMap.getSize().y + screen.ypos) and
+                    toolbox.toggleTimeline == false) {
+                    toolbox.toggleLines = true;
 
                     //cursorPosition.setString("(" + std::to_string(position.x) + ", " + std::to_string(position.y));
 
@@ -200,12 +202,22 @@ Screen screen;
                     }
                     sightingData.setString(sightingsString(sightings, page_num));
                 }
-                if (position.x > toolbox.timeButton->getPosition().x
-                    and position.x < toolbox.timeButton->getPosition().x + toolbox.timeButtonTexture.getSize().x
-                    and position.y > toolbox.timeButton->getPosition().y
-                    and position.y < toolbox.timeButton->getPosition().y + toolbox.timeButtonTexture.getSize().y) {
+                //this clicks on the timeline rectangle
+                if (position.x > timeline.getPosition().x
+                    and position.x < timeline.getPosition().x + timeline.getSize().x
+                    and position.y > timeline.getPosition().y
+                    and position.y < timeline.getPosition().y + timeline.getSize().y
+                    and toolbox.toggleLines == false) {
                     toolbox.timeButton->onClick();
-
+                    toolbox.timeButton->getSprite()->setPosition(position.x - toolbox.timeButtonTexture.getSize().x/2, 440);
+                }
+                //this clicks on the reset button to clear the timeline and map
+                if (position.x > toolbox.xButton->getPosition().x
+                    and position.x < toolbox.xButton->getPosition().x + toolbox.xButtonTexture.getSize().x
+                    and position.y > toolbox.xButton->getPosition().y
+                    and position.y < toolbox.xButton->getPosition().y + toolbox.xButtonTexture.getSize().y) {
+                    toolbox.xButton->onClick();
+                    screen.updateLines(-1,-1);
                 }
             }
         }
@@ -239,17 +251,17 @@ Screen screen;
     }
 }
 
-void increasePage(){ //returns position
+void increasePage(){
     Toolbox& toolbox = toolbox.getInstance();
     toolbox.page++;
 }
 
-void decreasePage(){ //returns position
+void decreasePage(){
     Toolbox& toolbox = toolbox.getInstance();
     toolbox.page--;
 }
 
-void timeScroll() { /*UFOlist& ufolist*/
+void timeScroll(){
     Toolbox &toolbox = toolbox.getInstance();
     ufo_grid all_sightings = toolbox.List.GetGrid();
     for (auto &row: all_sightings) {
@@ -264,5 +276,9 @@ void timeScroll() { /*UFOlist& ufolist*/
         }
     }
 }
-void exit() {
+void reset(){
+    Toolbox& toolbox = toolbox.getInstance();
+    toolbox.toggleTimeline = false;
+    toolbox.toggleLines = false;
+
 }
