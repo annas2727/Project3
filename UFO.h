@@ -32,6 +32,7 @@ class UFOlist {
     // Not yet implemented
 public:
     UFOlist(string file);
+
     ufo_grid GetGrid();
     // First -> bool to check if grid is populated (don't want to display initializer values)
     // Second-> Gets vector of sighting given an exact X, Y

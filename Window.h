@@ -6,9 +6,9 @@
 #include <chrono>
 #pragma once
 
-void startWindow(UFOlist& ufolist);
+void startWindow();
 void increasePage(); //onclick action
 void decreasePage(); //onclick action
-void timeScroll(UFOlist& ufolist);
+void timeScroll();
 void exit();
 
