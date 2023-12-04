@@ -10,7 +10,7 @@
 #include "QuickSort.h"
 #include "MergeSort.h"
 
-// checks the length of a string so that it does not extend past the edge of the borders
+// checks the length of a string so that it does not extend past the edge of the borders of the right pane
 string lengthCheck(string base) {
     int size = base.size();
     if (size > 19) {
@@ -20,7 +20,7 @@ string lengthCheck(string base) {
     return base;
 }
 
-// generates the data that appears on the right side
+// generates the sighting data that appears on the right side
 string sightingsString(vector<UFOsighting> &sightings, const int &page_num) {
     string str;
     for (int i = page_num; i < sightings.size(); i++) {
@@ -94,7 +94,7 @@ void startWindow() {
     mergeText.setPosition(35, 565);
 
     // created by Aidan 12:47 12/3
-    sf::Text sightingData;
+    sf::Text sightingData; // displayed on right when user clicks the map
 
     sightingData.setFont(toolbox.font);
     sightingData.setCharacterSize(13);
@@ -203,7 +203,6 @@ void startWindow() {
                     latitude = static_cast<int>(screen.getLatitude(position.y - screen.ypos));
 
                     // positions of latitude and longitude are swapped in GetSigthingsAt method
-                    // get sightings
                     sightings = toolbox.List.GetSightingsAt(latitude, longitude).second;
                     sightings2 = sightings;
 
@@ -231,11 +230,6 @@ void startWindow() {
 
                     sightingData.setString(sightingsString(sightings, page_num));
                 }
-
-                //this is going to have to find and print all the surrounding UFOs
-                // SELECT count(*) FROM nuforc_reports where city_longitude is not null and country = "USA"
-
-                //this clicks on the timeline rectangle
             }
         }
 
