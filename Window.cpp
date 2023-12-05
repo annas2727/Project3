@@ -81,11 +81,6 @@ void startWindow() {
     time.setCharacterSize(18);
     time.setFillColor(sf::Color::Green);
     time.setPosition(745, 110);
-    time.setString ("Click on the map to see \n"
-                    "all the UFOs at a date. \n"
-                    "The first date is \n"
-                    "01/01/1969 and the most \n"
-                    "recent is 12/22/2022 \n");
 
     //sets up the text for printing how fast quick sort is
     sf::Text quickText;
@@ -152,6 +147,11 @@ void startWindow() {
                     toolbox.timeButton->onClick(); //function to change the circles
                     toolbox.timeButton->getSprite()->setPosition(position.x - toolbox.timeButtonTexture.getSize().x/2, 440);
                     //prints how fast each sort is
+                    time.setString ("Click on the map to see \n"
+                                    "all the UFOs at a date. \n"
+                                    "The first date is \n"
+                                    "01/01/1969 and the most \n"
+                                    "recent is 12/22/2022 \n");
                     mergeText.setString ("Merge sort: " + to_string(toolbox.merge_all) + " ms");
                     quickText.setString ("Quick sort: " + to_string(toolbox.quick_all) + " ms");
                 }
@@ -196,6 +196,8 @@ void startWindow() {
                     sightingData.setString("");
                     time.setString("");
                     toolbox.timeButton->getSprite()->setPosition(35, 440); //resets it to the initial position at the beginning of the timeline
+                    mergeText.setString("");
+                    quickText.setString("");
                 }
                 if ((position.x > screen.xpos) and (position.x < screen.usaMap.getSize().x + screen.xpos) and
                     (position.y > screen.ypos) and (position.y < screen.usaMap.getSize().y + screen.ypos) and
